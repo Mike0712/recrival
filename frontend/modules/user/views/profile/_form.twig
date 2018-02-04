@@ -1,0 +1,30 @@
+<div class="person-form">
+
+	{% set form = active_form_begin() %}
+
+	{{ form.field(model, 'first_name').textInput({'maxlength': true}) | raw }}
+
+	{{ form.field(model, 'last_name').textInput({'maxlength': true}) | raw }}
+
+	{{ form.field(model, 'gender').dropDownList({
+		'm': yii.t('app', 'male'),
+		'f': yii.t('app', 'female'),
+	}) | raw }}
+
+	{{ form.field(model, 'birthday').textInput() | raw }}
+
+	{{ form.field(model, 'user_id').textInput() | raw }}
+
+	{{ form.field(model, 'created_at').textInput() | raw }}
+
+	{{ form.field(model, 'updated_at').textInput() | raw }}
+
+	<div class="form-group">
+		{{ html.submitButton(yii.t('app', 'Save'), {
+			'class': 'btn btn-btn-success',
+		}) | raw }}
+	</div>
+
+	{{ active_form_end() }}
+
+</div>

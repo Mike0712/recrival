@@ -56,13 +56,17 @@ return [
                     //'cachePath' => '@runtime/Smarty/cache',
                 ],
                 'twig' => [
-                    'class' => yii\twig\ViewRenderer::class,
+                    'class' => 'yii\twig\ViewRenderer',
                     'cachePath' => '@runtime/Twig/cache',
                     // Array of twig options:
                     'options' => [
                         'auto_reload' => true,
                     ],
-                    'globals' => ['html' => yii\helpers\Html::class],
+                    'globals' => [
+                        'html' => ['class' => \yii\helpers\Html::class],
+                        'yii'  => ['class' => \Yii::class],
+
+                    ],
                     'uses' => ['yii\bootstrap'],
                 ],
             ],
@@ -70,11 +74,12 @@ return [
         'i18n' => [
             'translations' => [
                 '*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class' => yii\i18n\GettextMessageSource::className(),
                     'basePath' => '@frontend/messages',
                 ],
             ],
         ],
     ],
     'params' => $params,
+
 ];

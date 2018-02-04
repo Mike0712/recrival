@@ -1,0 +1,17 @@
+{% extends '@frontend/views/layouts/main.twig' %}
+{#{{  this.title = yii.t('persons', 'Update Person: {nameAttribute}', [
+    'nameAttribute' => model.id,
+]) }}#}
+
+{#{{ $this->params['breadcrumbs'][] = ['label' => Yii::t('persons', 'People'), 'url' => ['index']]; }}#}
+{#$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];#}
+{#$this->params['breadcrumbs'][] = Yii::t('persons', 'Update');#}
+{% block content %}
+	<div class="person-update">
+
+		<h1>{{ html.encode(this.title) }}</h1>
+
+		{{ this.render('_form.twig',{ 'model':model }) | raw }}
+
+	</div>
+{% endblock %}

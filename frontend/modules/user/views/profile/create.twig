@@ -1,0 +1,16 @@
+{% extends '@frontend/views/layouts/main.twig' %}
+{#{{  this.title = yii.t('persons', 'Create Person'); }}#}
+{#{{  this.params['breadcrumbs'][] = {'label': yii.t('persons', 'People'), 'url': ['index']} }}#}
+{#{{ this.params['breadcrumbs'][] = this.title }}#}
+
+{% block content %}
+	<div class="person-create">
+
+		<h1>{{ html.encode(this.title) }}</h1>
+
+		{{ this.render('_form.twig', {
+			'model': model,
+		}) | raw }}
+
+	</div>
+{% endblock %}

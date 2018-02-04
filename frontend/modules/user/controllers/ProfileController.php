@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class ProfileController extends Controller
 {
+    public $layout = false;
     /**
      * @inheritdoc
      */
@@ -38,7 +39,7 @@ class ProfileController extends Controller
         $searchModel = new SearchPerson();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index.twig', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -52,7 +53,7 @@ class ProfileController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('view.twig', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -70,7 +71,7 @@ class ProfileController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('create', [
+        return $this->render('create.twig', [
             'model' => $model,
         ]);
     }
@@ -90,7 +91,7 @@ class ProfileController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->render('update.twig', [
             'model' => $model,
         ]);
     }

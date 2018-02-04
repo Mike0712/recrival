@@ -1,0 +1,30 @@
+{% extends '@frontend/views/layouts/main.twig' %}
+
+{% set title = yii.t('persons', 'People') %}
+{#{{ this.params['breadcrumbs'][] = this.title }}#}
+
+{% block content %}
+
+	<div class="person-index">
+
+		<h1>{{ html.encode(title) }}</h1>
+		{{ this.render('_search.twig', {'model': searchModel}) | raw }}
+		<p>
+			{{ html.a(yii.t('persons', 'Create Person'), '/user/profile/create', {'class':'btn btn-success'}) | raw }}
+		</p>
+
+		{{ grid_view_widget({
+			'dataProvider': dataProvider,
+			'columns': [
+				{'class': 'yii\\grid\\SerialColumn'},
+				'id',
+				'first_name',
+				'last_name',
+				'gender',
+				'birthday',
+				{'class': 'yii\\grid\\ActionColumn'},
+			]
+		}) }}
+
+	</div>
+{% endblock %}
