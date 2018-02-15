@@ -52,6 +52,35 @@ class AuthController extends \yii\web\Controller
         return $this->render('index');
     }
 
+    public function actionGetAjaxForm()
+    {
+        $this->layout = false;
+        if (!Yii::$app->request->isAjax) {
+            throw new yii\web\NotFoundHttpException();
+        }
+        $post = Yii::$app->request->post();
+
+        if (isset($post['formName'])) {
+            switch ($post['formName']) {
+                case 'login':
+                    $formName = 'forms/_login.twig';
+                    $model = new LoginForm();
+                    break;
+                case 'signup':
+                    $formName = 'forms/_signup.twig';
+                    $model = new SignupForm();
+                    break;
+                default:
+                    $formName = 'forms/_login.twig';
+                    $model = new LoginForm();
+            }
+
+            return $this->render($formName, [
+                'model' => $model,
+            ]);
+        }
+    }
+
     /**
      * Logs in a user.
      *
@@ -63,11 +92,23 @@ class AuthController extends \yii\web\Controller
             return $this->goHome();
         }
 
+        $view = 'login';
+        $ajax = false;
+
+        if (Yii::$app->request->isAjax) {
+            $ajax = true;
+            $this->layout = false;
+            $view = 'forms/_login.twig';
+        }
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            if ($ajax) {
+                return 'success';
+            }
             return $this->goBack();
         } else {
-            return $this->render('login', [
+            return $this->render($view, [
                 'model' => $model,
             ]);
         }
@@ -81,7 +122,9 @@ class AuthController extends \yii\web\Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
+        if (Yii::$app->request->isAjax){
+            return 'logout_approved';
+        }
         return $this->goHome();
     }
 
@@ -92,16 +135,25 @@ class AuthController extends \yii\web\Controller
      */
     public function actionSignup()
     {
+        $view = 'signup';
+        if (Yii::$app->request->isAjax) {
+            $ajax = true;
+            $this->layout = false;
+            $view = 'forms/_signup.twig';
+        }
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
+                    if ($ajax){
+                        return 'success';
+                    }
                     return $this->goHome();
                 }
             }
         }
 
-        return $this->render('signup', [
+        return $this->render($view, [
             'model' => $model,
         ]);
     }
