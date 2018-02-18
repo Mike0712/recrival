@@ -46,12 +46,6 @@ class AuthController extends \yii\web\Controller
         ];
     }
 
-
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
-
     public function actionGetAjaxForm()
     {
         $this->layout = false;
@@ -69,6 +63,10 @@ class AuthController extends \yii\web\Controller
                 case 'signup':
                     $formName = 'forms/_signup.twig';
                     $model = new SignupForm();
+                    break;
+                case 'request-reset':
+                    $formName = 'forms/_token.twig';
+                    $model = new PasswordResetRequestForm();
                     break;
                 default:
                     $formName = 'forms/_login.twig';
@@ -97,7 +95,6 @@ class AuthController extends \yii\web\Controller
 
         if (Yii::$app->request->isAjax) {
             $ajax = true;
-            $this->layout = false;
             $view = 'forms/_login.twig';
         }
 
@@ -122,7 +119,7 @@ class AuthController extends \yii\web\Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        if (Yii::$app->request->isAjax){
+        if (Yii::$app->request->isAjax) {
             return 'logout_approved';
         }
         return $this->goHome();
@@ -136,16 +133,16 @@ class AuthController extends \yii\web\Controller
     public function actionSignup()
     {
         $view = 'signup';
+        $ajax = false;
         if (Yii::$app->request->isAjax) {
             $ajax = true;
-            $this->layout = false;
             $view = 'forms/_signup.twig';
         }
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
-                    if ($ajax){
+                    if ($ajax) {
                         return 'success';
                     }
                     return $this->goHome();
@@ -166,17 +163,27 @@ class AuthController extends \yii\web\Controller
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
+        $view = 'requestPasswordResetToken';
+        $ajax = false;
+
+        if (Yii::$app->request->isAjax) {
+            $ajax = true;
+            $view = 'forms/_token.twig';
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
+                if ($ajax) {
+                    return 'success';
+                }
                 return $this->goHome();
             } else {
                 Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
             }
         }
 
-        return $this->render('requestPasswordResetToken', [
+        return $this->render($view, [
             'model' => $model,
         ]);
     }

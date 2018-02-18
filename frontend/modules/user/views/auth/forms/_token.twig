@@ -1,0 +1,9 @@
+{% set form = active_form_begin({'id': 'request-password-reset-form'}) %}
+
+{{ form.field(model, 'email').textInput({'autofocus': true}) | raw }}
+
+<div class="form-group">
+	{{ html.submitButton('Send', {'class': 'btn btn-primary'}) | raw }}
+</div>
+
+{{ active_form_end() }}

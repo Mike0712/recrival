@@ -16,6 +16,8 @@ return [
             'class' => \frontend\modules\user\Module::className(),
         ],
     ],
+    'layout' => false,
+    'defaultRoute' => 'user/profile',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -49,12 +51,8 @@ return [
             ],
         ],
         'view' => [
-            'class' => yii\web\View::class,
+            'class' => yii\web\View::className(),
             'renderers' => [
-                'tpl' => [
-                    'class' => yii\smarty\ViewRenderer::class,
-                    //'cachePath' => '@runtime/Smarty/cache',
-                ],
                 'twig' => [
                     'class' => 'yii\twig\ViewRenderer',
                     'cachePath' => '@runtime/Twig/cache',
