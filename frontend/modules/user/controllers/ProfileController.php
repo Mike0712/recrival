@@ -2,6 +2,7 @@
 
 namespace frontend\modules\user\controllers;
 
+use common\models\Menu;
 use Yii;
 use common\models\persons\Person;
 use frontend\modules\user\models\SearchPerson;

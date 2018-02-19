@@ -63,7 +63,7 @@ return [
                     'globals' => [
                         'html' => ['class' => \yii\helpers\Html::class],
                         'yii'  => ['class' => \Yii::class],
-
+                        'menuActive' => \common\models\Menu::find()->joinWith('menuTranslations'),
                     ],
                     'uses' => ['yii\bootstrap'],
                 ],
